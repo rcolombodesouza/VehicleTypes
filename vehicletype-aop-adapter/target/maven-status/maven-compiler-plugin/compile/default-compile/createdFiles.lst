@@ -1,0 +1,4 @@
+com/register/vehicletype/aop/aspect/TruckServiceAdapterAspect.class
+com/register/vehicletype/aop/aspect/MotorcycleServiceAdapterAspect.class
+com/register/vehicletype/aop/config/AOPConfig.class
+com/register/vehicletype/aop/aspect/CarServiceAdapterAspect.class

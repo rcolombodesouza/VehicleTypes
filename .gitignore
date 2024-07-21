@@ -1,0 +1,9 @@
+vehicletype-aop-adapter/target/
+vehicletype-assembly/target/
+vehicletype-db-adapter/target/
+vehicletype-domain/target/
+vehicletype-http-adapter/target/
+vehicletype-itests/target/
+vehicletype-liquibase-adapter/target/
+vehicletype-observability-adapter/target/
+.idea/

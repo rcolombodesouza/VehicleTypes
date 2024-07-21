@@ -1,0 +1,17 @@
+com/register/vehicletype/domain/service/MotorcycleServiceAdapter.class
+com/register/vehicletype/domain/dto/TruckDTO.class
+com/register/vehicletype/domain/config/DomainConfig.class
+com/register/vehicletype/domain/port/outbound/IRepositoryPort.class
+com/register/vehicletype/domain/port/inbound/IHazelcastSubscriberPort.class
+com/register/vehicletype/domain/event/VehicleDeletedEvent.class
+com/register/vehicletype/domain/dto/MotorcycleDTO.class
+com/register/vehicletype/domain/exception/MotorcycleNotFoundException.class
+com/register/vehicletype/domain/event/VehicleChangedEvent.class
+com/register/vehicletype/domain/service/TruckServiceAdapter.class
+com/register/vehicletype/domain/exception/TruckNotFoundException.class
+com/register/vehicletype/domain/exception/CarNotFoundException.class
+com/register/vehicletype/domain/port/outbound/IHazelcastPublisherPort.class
+com/register/vehicletype/domain/service/CarServiceAdapter.class
+com/register/vehicletype/domain/dto/CarDTO.class
+com/register/vehicletype/domain/port/inbound/IServicePort.class
+com/register/vehicletype/domain/event/VehicleSavedEvent.class

@@ -1,0 +1,9 @@
+com/register/vehicletype/adapter/http/inbound/IRestController.class
+com/register/vehicletype/adapter/http/exception/GlobalExceptionHandler.class
+com/register/vehicletype/adapter/http/validator/impl/NumericValidatorImpl.class
+com/register/vehicletype/adapter/http/validator/Numeric.class
+com/register/vehicletype/adapter/http/config/HttpAdapterConfig.class
+com/register/vehicletype/adapter/http/inbound/impl/TruckRestController.class
+com/register/vehicletype/adapter/http/inbound/impl/CarRestController.class
+com/register/vehicletype/adapter/http/inbound/impl/MotorcycleRestController.class
+com/register/vehicletype/adapter/http/exception/CustomErrorResponse.class

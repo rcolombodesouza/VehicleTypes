@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.28.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+
+    <changeSet id="1717866868955-1" author="vehicle_types">
+        <createTable tableName="car">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_car"/>
+            </column>
+            <column name="number_of_doors" type="INT"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1717866868955-2" author="vehicle_types">
+        <createTable tableName="motorcycle">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_motorcycle"/>
+            </column>
+            <column name="has_sidecar" type="BOOLEAN"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1717866868955-3" author="vehicle_types">
+        <createTable tableName="truck">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_truck"/>
+            </column>
+            <column name="payload_capacity" type="DOUBLE"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1717866868955-4" author="vehicle_types">
+        <createTable tableName="vehicle">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_vehicle"/>
+            </column>
+            <column name="make" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="model" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="year" type="INT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="1717866868955-5" author="vehicle_types">
+        <addForeignKeyConstraint baseColumnNames="id" baseTableName="car" constraintName="FK_CAR_ON_ID"
+                                 referencedColumnNames="id" referencedTableName="vehicle"/>
+    </changeSet>
+    <changeSet id="1717866868955-6" author="vehicle_types">
+        <addForeignKeyConstraint baseColumnNames="id" baseTableName="motorcycle" constraintName="FK_MOTORCYCLE_ON_ID"
+                                 referencedColumnNames="id" referencedTableName="vehicle"/>
+    </changeSet>
+    <changeSet id="1717866868955-7" author="vehicle_types">
+        <addForeignKeyConstraint baseColumnNames="id" baseTableName="truck" constraintName="FK_TRUCK_ON_ID"
+                                 referencedColumnNames="id" referencedTableName="vehicle"/>
+    </changeSet>
+
+</databaseChangeLog>
