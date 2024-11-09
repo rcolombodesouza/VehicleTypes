@@ -15,37 +15,30 @@
         <dependency>
             <groupId>com.register</groupId>
             <artifactId>vehicletype-observability-adapter</artifactId>
-            <version>${revision}</version>
         </dependency>
         <dependency>
             <groupId>com.register</groupId>
             <artifactId>vehicletype-domain</artifactId>
-            <version>${revision}</version>
         </dependency>
         <dependency>
             <groupId>com.register</groupId>
             <artifactId>vehicletype-db-adapter</artifactId>
-            <version>${revision}</version>
         </dependency>
         <dependency>
             <groupId>com.register</groupId>
             <artifactId>vehicletype-liquibase-adapter</artifactId>
-            <version>${revision}</version>
         </dependency>
         <dependency>
             <groupId>com.register</groupId>
             <artifactId>vehicletype-http-adapter</artifactId>
-            <version>${revision}</version>
         </dependency>
         <dependency>
             <groupId>com.register</groupId>
             <artifactId>vehicletype-aop-adapter</artifactId>
-            <version>${revision}</version>
         </dependency>
         <dependency>
             <groupId>com.register</groupId>
             <artifactId>vehicletype-itests</artifactId>
-            <version>${revision}</version>
         </dependency>
     </dependencies>
 

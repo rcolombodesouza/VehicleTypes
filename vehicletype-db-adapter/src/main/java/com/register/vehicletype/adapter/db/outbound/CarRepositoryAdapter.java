@@ -1,15 +1,16 @@
 package com.register.vehicletype.adapter.db.outbound;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.register.vehicletype.adapter.db.entity.CarEntity;
 import com.register.vehicletype.adapter.db.repository.CarRepository;
 import com.register.vehicletype.domain.dto.CarDTO;
+import com.register.vehicletype.domain.dto.TruckDTO;
 import com.register.vehicletype.domain.exception.CarNotFoundException;
 import com.register.vehicletype.domain.port.outbound.IRepositoryPort;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.core.convert.ConversionService;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
@@ -25,16 +26,16 @@ import java.util.List;
 public class CarRepositoryAdapter implements IRepositoryPort<CarDTO, Long> {
 
     private final CarRepository carRepository;
-    private final ObjectMapper objectMapper;
+    private final ConversionService conversionService;
 
     /**
      * The CarRepositoryAdapter class is an adapter class that implements the IRepositoryPort interface
      * for the CarDTO class and the Long type.
      * It provides CRUD operations for car entities using a CarRepository and a ModelMapper.
      */
-    public CarRepositoryAdapter(CarRepository carRepository, ObjectMapper objectMapper) {
+    public CarRepositoryAdapter(CarRepository carRepository, ConversionService conversionService) {
         this.carRepository = carRepository;
-        this.objectMapper = objectMapper;
+        this.conversionService = conversionService;
     }
 
     /**
@@ -49,7 +50,7 @@ public class CarRepositoryAdapter implements IRepositoryPort<CarDTO, Long> {
     @Transactional(readOnly = true)
     public CarDTO findById(Long id) {
         CarEntity carEntity = carRepository.findById(id).orElseThrow(() -> new CarNotFoundException(id));
-        return objectMapper.convertValue(carEntity, CarDTO.class);
+        return conversionService.convert(carEntity, CarDTO.class);
     }
 
     /**
@@ -62,7 +63,7 @@ public class CarRepositoryAdapter implements IRepositoryPort<CarDTO, Long> {
     public List<CarDTO> findAllByOrderByMakeAsc() {
         Collection<CarEntity> allCarsOrderedByMakeAsc = carRepository.findAllByOrderByMakeAsc();
         return allCarsOrderedByMakeAsc.stream()
-                .map(carEntity -> objectMapper.convertValue(carEntity, CarDTO.class)).toList();
+                .map(carEntity -> conversionService.convert(carEntity, CarDTO.class)).toList();
     }
 
     /**
@@ -75,9 +76,9 @@ public class CarRepositoryAdapter implements IRepositoryPort<CarDTO, Long> {
     @CachePut(key = "#result.id()")
     @Transactional
     public CarDTO save(CarDTO carDTO) {
-        CarEntity carEntity = objectMapper.convertValue(carDTO, CarEntity.class);
+        CarEntity carEntity = conversionService.convert(carDTO, CarEntity.class);
         CarEntity savedCarEntity = carRepository.save(carEntity);
-        return objectMapper.convertValue(savedCarEntity, CarDTO.class);
+        return conversionService.convert(savedCarEntity, CarDTO.class);
     }
 
     /**

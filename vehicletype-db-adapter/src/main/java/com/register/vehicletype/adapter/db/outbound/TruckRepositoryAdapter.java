@@ -1,6 +1,5 @@
 package com.register.vehicletype.adapter.db.outbound;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.register.vehicletype.adapter.db.entity.TruckEntity;
 import com.register.vehicletype.adapter.db.repository.TruckRepository;
 import com.register.vehicletype.domain.dto.TruckDTO;
@@ -10,6 +9,7 @@ import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.core.convert.ConversionService;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
@@ -23,15 +23,15 @@ import java.util.List;
 public class TruckRepositoryAdapter implements IRepositoryPort<TruckDTO, Long> {
 
     private final TruckRepository truckRepository;
-    private final ObjectMapper objectMapper;
+    private final ConversionService conversionService;
 
     /**
      * The TruckRepositoryAdapter class is an implementation of the IRepositoryPort interface
      * that is responsible for managing TruckDTO objects using TruckRepository and ConversionService.
      */
-    public TruckRepositoryAdapter(TruckRepository truckRepository, ObjectMapper objectMapper) {
+    public TruckRepositoryAdapter(TruckRepository truckRepository, ConversionService conversionService) {
         this.truckRepository = truckRepository;
-        this.objectMapper = objectMapper;
+        this.conversionService = conversionService;
     }
 
     /**
@@ -46,7 +46,7 @@ public class TruckRepositoryAdapter implements IRepositoryPort<TruckDTO, Long> {
     @Transactional(readOnly = true)
     public TruckDTO findById(Long id) {
         TruckEntity truckEntity = truckRepository.findById(id).orElseThrow(() -> new TruckNotFoundException(id));
-        return objectMapper.convertValue(truckEntity, TruckDTO.class);
+        return conversionService.convert(truckEntity, TruckDTO.class);
     }
 
     /**
@@ -59,7 +59,7 @@ public class TruckRepositoryAdapter implements IRepositoryPort<TruckDTO, Long> {
     public List<TruckDTO> findAllByOrderByMakeAsc() {
         Collection<TruckEntity> allTrucksOrderedByMakeAsc = truckRepository.findAllByOrderByMakeAsc();
         return allTrucksOrderedByMakeAsc.stream()
-                .map(truckEntity -> objectMapper.convertValue(truckEntity, TruckDTO.class)).toList();
+                .map(truckEntity -> conversionService.convert(truckEntity, TruckDTO.class)).toList();
     }
 
     /**
@@ -72,9 +72,9 @@ public class TruckRepositoryAdapter implements IRepositoryPort<TruckDTO, Long> {
     @CachePut(key = "#result.id()")
     @Transactional
     public TruckDTO save(TruckDTO truckDTO) {
-        TruckEntity truckEntity = objectMapper.convertValue(truckDTO, TruckEntity.class);
+        TruckEntity truckEntity = conversionService.convert(truckDTO, TruckEntity.class);
         TruckEntity savedTruckEntity = truckRepository.save(truckEntity);
-        return objectMapper.convertValue(savedTruckEntity, TruckDTO.class);
+        return conversionService.convert(savedTruckEntity, TruckDTO.class);
     }
 
     /**

@@ -5,7 +5,7 @@ services:
     image: postgres:latest
     container_name: postgresql
     ports:
-      - 5432:5432
+      - "5432:5432"
     environment:
       POSTGRES_PASSWORD: password
       POSTGRES_USER: postgres
@@ -21,7 +21,7 @@ services:
     image: dpage/pgadmin4:latest
     container_name: pgadmin
     ports:
-      - 5050:80
+      - "5050:80"
     environment:
       PGADMIN_DEFAULT_PASSWORD: password
       PGADMIN_DEFAULT_EMAIL: pgadmin4@pgadmin.com
@@ -32,75 +32,74 @@ services:
     restart: always
 
   # REDIS TO CACHE DATA
-  #To make sure your cache is being written to redis run the command docker exec -it redis sh. After that redis-cli and keys *
+  #To make sure your cache is being written to redis run the command "docker exec -it redis sh". After that "redis-cli" and "keys *".
   redis:
     image: redis:latest
     container_name: redis
     ports:
-      - 6379:6379
+      - "6379:6379"
     volumes:
       - redis_data:/data
     networks:
       - vehicletype_network
     restart: always
 
-  # PROMETHEUS USED FOR OBSERVABILITY
-  prometheus:
-    image: prom/prometheus:latest
-    container_name: prometheus
+  # ELASTICSEARCH USED FOR OBSERVABILITY
+  elasticsearch:
+    image: elasticsearch:8.15.3
+    container_name: elasticsearch
     ports:
-      - 9090:9090
-    volumes:
-      - ./vehicletype-observability-adapter/src/main/resources/config/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
-      - prometheus_data:/prometheus
+      - "9200:9200"
     networks:
       - vehicletype_network
-    restart: always
-
-  # JAEGER USED FOR OBSERVABILITY
-  jaeger:
-    image: jaegertracing/all-in-one:latest
-    container_name: jaeger
-    ports:
-      - 5775:5775/udp
-      - 6831:6831/udp
-      - 6832:6832/udp
-      - 5778:5778
-      - 16686:16686
-      - 14268:14268
-      - 14250:14250
-      - 9411:9411
     volumes:
-      - jaeger-data:/jaeger
-    networks:
-      - vehicletype_network
+      - esdata:/usr/share/elasticsearch/data
+    environment:
+      discovery.type: single-node
+      xpack.security.enabled: false
     restart: always
 
-  # COLLECTS METRICS FOR THE SYSTEM
   otel-collector:
-    image: otel/opentelemetry-collector-contrib
+    image: otel/opentelemetry-collector-contrib:latest
     container_name: otel-collector
     ports:
-      - 1888:1888 # pprof extension
-      - 8888:8888 # Prometheus' metrics exposed by the Collector
-      - 8889:8889 # Prometheus exporter metrics
-      - 13133:13133 # health_check extension
-      - 4317:4317 # OTLP gRPC receiver
-      - 4318:4318 # OTLP http receiver
-      - 55679:55679 # zpages extension
+      - "4317:4317"  # gRPC
+      - "4318:4318" # HTTP
     volumes:
-      - ./vehicletype-observability-adapter/src/main/resources/config/otel/otel-collector-config.yml:/etc/otel-collector-config.yml
+      - ./vehicletype-observability-adapter/src/main/resources/otel/otel-collector-config.yml:/etc/otel-collector-config.yml
     command: ["--config=/etc/otel-collector-config.yml"]
+    restart: always
     networks:
       - vehicletype_network
-    restart: always
 
-  # GRAFANA USED FOR OBSERVABILITY
-  grafana:
-    image: grafana/grafana:latest
-    container_name: grafana
+
+#  # APMSERVER MAKES USE OF OPENTELEMETRY TO EXTRACT METRICS, TRACES AND LOGS FROM THE APPLICATION
+#  apm-server:
+#    image: elastic/apm-server:8.15.3
+#    container_name: apm-server
+#    environment:
+#      ELASTICSEARCH_HOST: elasticsearch:9200
+#      ELASTIC_APM_ACTIVE: true
+#      ELASTIC_APM_SERVER_URL: http://localhost:8200
+#    ports:
+#      - "8200:8200"
+#    depends_on:
+#      - elasticsearch
+#    networks:
+#      - vehicletype_network
+#    restart: always
+
+  # KIBANA TO SHOW THE COLLECTED DATA FROM ELASTICSEARCH AND APMSERVER
+  kibana:
+    image: kibana:8.15.3
+    container_name: kibana
+    depends_on:
+      - elasticsearch
+    environment:
+      ELASTICSEARCH_HOSTS: http://elasticsearch:9200
+      ELASTICSEARCH_PASSWORD: password
     ports:
-      - 3000:3000
+      - "5601:5601"
     networks:
       - vehicletype_network
     restart: always
@@ -114,6 +113,5 @@ volumes:
   pgadmin_data:
   redis_data:
     driver: local
-  prometheus_data:
-  grafana_data:
-  jaeger-data:
+  esdata:
+    driver: local

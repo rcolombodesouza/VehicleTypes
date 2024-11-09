@@ -1,7 +1,7 @@
 package com.register.vehicletype;
 
-import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
 
 /**
  * The VehicleTypeApplication class is a Spring Boot application that serves as the entry point of the application.
@@ -17,6 +17,6 @@ public class VehicleTypeApplication {
      * @param args The command line arguments passed to the application
      */
     public static void main(String[] args) {
-        SpringApplication.run(VehicleTypeApplication.class, args);
+        new SpringApplicationBuilder(VehicleTypeApplication.class).setAddConversionService(true).run(args);
     }
 }

@@ -16,7 +16,6 @@
         <dependency>
             <groupId>com.register</groupId>
             <artifactId>vehicletype-domain</artifactId>
-            <version>${revision}</version>
         </dependency>
 
         <!-- Aspect Oriented Programming -->

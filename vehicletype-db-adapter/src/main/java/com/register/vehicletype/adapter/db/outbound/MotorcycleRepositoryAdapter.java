@@ -1,6 +1,5 @@
 package com.register.vehicletype.adapter.db.outbound;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.register.vehicletype.adapter.db.entity.MotorcycleEntity;
 import com.register.vehicletype.adapter.db.repository.MotorcycleRepository;
 import com.register.vehicletype.domain.dto.MotorcycleDTO;
@@ -10,6 +9,7 @@ import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.core.convert.ConversionService;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
@@ -24,16 +24,16 @@ import java.util.List;
 public class MotorcycleRepositoryAdapter implements IRepositoryPort<MotorcycleDTO, Long> {
 
     private final MotorcycleRepository motorcycleRepository;
-    private final ObjectMapper objectMapper;
+    private final ConversionService conversionService;
 
     /**
      * The MotorcycleRepositoryAdapter is an adapter class that implements the IRepositoryPort interface
      * for the MotorcycleDTO class. It provides CRUD operations for managing MotorcycleDTO objects in the
      * database through the MotorcycleRepository.
      */
-    public MotorcycleRepositoryAdapter(MotorcycleRepository motorcycleRepository, ObjectMapper objectMapper) {
+    public MotorcycleRepositoryAdapter(MotorcycleRepository motorcycleRepository, ConversionService conversionService) {
         this.motorcycleRepository = motorcycleRepository;
-        this.objectMapper = objectMapper;
+        this.conversionService = conversionService;
     }
 
     /**
@@ -48,7 +48,7 @@ public class MotorcycleRepositoryAdapter implements IRepositoryPort<MotorcycleDT
     @Transactional(readOnly = true)
     public MotorcycleDTO findById(Long id) {
         MotorcycleEntity motorcycleEntity = motorcycleRepository.findById(id).orElseThrow(() -> new MotorcycleNotFoundException(id));
-        return objectMapper.convertValue(motorcycleEntity, MotorcycleDTO.class);
+        return conversionService.convert(motorcycleEntity, MotorcycleDTO.class);
     }
 
     /**
@@ -61,7 +61,7 @@ public class MotorcycleRepositoryAdapter implements IRepositoryPort<MotorcycleDT
     public List<MotorcycleDTO> findAllByOrderByMakeAsc() {
         Collection<MotorcycleEntity> allMotorcyclesOrderedByMakeAsc = motorcycleRepository.findAllByOrderByMakeAsc();
         return allMotorcyclesOrderedByMakeAsc.stream()
-                .map(motorcycleEntity -> objectMapper.convertValue(motorcycleEntity, MotorcycleDTO.class)).toList();
+                .map(motorcycleEntity -> conversionService.convert(motorcycleEntity, MotorcycleDTO.class)).toList();
     }
 
     /**
@@ -74,9 +74,9 @@ public class MotorcycleRepositoryAdapter implements IRepositoryPort<MotorcycleDT
     @CachePut(key = "#result.id()")
     @Transactional
     public MotorcycleDTO save(MotorcycleDTO motorcycleDTO) {
-        MotorcycleEntity motorcycleEntity = objectMapper.convertValue(motorcycleDTO, MotorcycleEntity.class);
+        MotorcycleEntity motorcycleEntity = conversionService.convert(motorcycleDTO, MotorcycleEntity.class);
         MotorcycleEntity savedMotorcycleEntity = motorcycleRepository.save(motorcycleEntity);
-        return objectMapper.convertValue(savedMotorcycleEntity, MotorcycleDTO.class);
+        return conversionService.convert(savedMotorcycleEntity, MotorcycleDTO.class);
     }
 
     /**

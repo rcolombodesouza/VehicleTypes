@@ -7,6 +7,7 @@
         objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
 
     <changeSet id="1717866868955-1" author="vehicle_types">
+        <comment>Create the CAR table</comment>
         <createTable tableName="car">
             <column name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="pk_car"/>
@@ -14,7 +15,9 @@
             <column name="number_of_doors" type="INT"/>
         </createTable>
     </changeSet>
+
     <changeSet id="1717866868955-2" author="vehicle_types">
+        <comment>Create the MOTORCYCLE table</comment>
         <createTable tableName="motorcycle">
             <column name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="pk_motorcycle"/>
@@ -22,7 +25,9 @@
             <column name="has_sidecar" type="BOOLEAN"/>
         </createTable>
     </changeSet>
+
     <changeSet id="1717866868955-3" author="vehicle_types">
+        <comment>Create the TRUCK table</comment>
         <createTable tableName="truck">
             <column name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="pk_truck"/>
@@ -30,7 +35,9 @@
             <column name="payload_capacity" type="DOUBLE"/>
         </createTable>
     </changeSet>
+
     <changeSet id="1717866868955-4" author="vehicle_types">
+        <comment>Create the VEHICLE table</comment>
         <createTable tableName="vehicle">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="pk_vehicle"/>
@@ -46,15 +53,21 @@
             </column>
         </createTable>
     </changeSet>
+
     <changeSet id="1717866868955-5" author="vehicle_types">
+        <comment>Create Foreign key constraint for CAR table</comment>
         <addForeignKeyConstraint baseColumnNames="id" baseTableName="car" constraintName="FK_CAR_ON_ID"
                                  referencedColumnNames="id" referencedTableName="vehicle"/>
     </changeSet>
+
     <changeSet id="1717866868955-6" author="vehicle_types">
+        <comment>Create Foreign key constraint for MOTORCYCLE table</comment>
         <addForeignKeyConstraint baseColumnNames="id" baseTableName="motorcycle" constraintName="FK_MOTORCYCLE_ON_ID"
                                  referencedColumnNames="id" referencedTableName="vehicle"/>
     </changeSet>
+
     <changeSet id="1717866868955-7" author="vehicle_types">
+        <comment>Create Foreign key constraint for TRUCK table</comment>
         <addForeignKeyConstraint baseColumnNames="id" baseTableName="truck" constraintName="FK_TRUCK_ON_ID"
                                  referencedColumnNames="id" referencedTableName="vehicle"/>
     </changeSet>
