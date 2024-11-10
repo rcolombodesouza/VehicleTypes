@@ -7,8 +7,8 @@ services:
     ports:
       - "5432:5432"
     environment:
-      POSTGRES_PASSWORD: password
-      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_USER: ${DB_USERNAME}
       POSTGRES_DB: vehicle_types
     volumes:
       - postgres_data:/var/lib/postgresql/data
@@ -23,12 +23,14 @@ services:
     ports:
       - "5050:80"
     environment:
-      PGADMIN_DEFAULT_PASSWORD: password
-      PGADMIN_DEFAULT_EMAIL: pgadmin4@pgadmin.com
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD}
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
     volumes:
       - pgadmin_data:/var/lib/pgadmin
     networks:
       - vehicletype_network
+    depends_on:
+      - postgres
     restart: always
 
   # REDIS TO CACHE DATA
@@ -97,7 +99,7 @@ services:
       - elasticsearch
     environment:
       ELASTICSEARCH_HOSTS: http://elasticsearch:9200
-      ELASTICSEARCH_PASSWORD: password
+      ELASTICSEARCH_PASSWORD: ${ELASTICSEARCH_PASSWORD}
     ports:
       - "5601:5601"
     networks:

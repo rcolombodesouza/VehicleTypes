@@ -22,3 +22,18 @@ In order to configure the vehicletype-observability-adapter, please include the 
 -javaagent:./vehicletype-observability-adapter/elastic-otel-javaagent-1.0.0.jar
 -Dotel.exporter.otlp.endpoint:http://host.docker.internal:4318
 -Dotel.service.name:vehicletype
+
+
+For the docker-compose file, please define the values for the following environment variables:
+- DB_PASSWORD
+- DB_USERNAME
+- ELASTICSEARCH_PASSWORD
+- PGADMIN_DEFAULT_EMAIL
+- PGADMIN_PASSWORD
+
+
+To run the Spring application you also need to define the following environment variables:
+- DB_PASSWORD
+- DB_URL
+- DB_USERNAME
+- OTEL_EXPORTER_OTLP_ENDPOINT

@@ -16,12 +16,14 @@ processors:
     limit_mib: 4000
     spike_limit_mib: 500
 
+  cumulativetodelta:
+
 exporters:
   elasticsearch:
     endpoints: ["http://elasticsearch:9200"]
-    index: "otel-metrics"
-    logs_index: "otel-logs"
     traces_index: "otel-traces"
+    logs_index: "otel-logs"
+    metrics_index: "otel-metrics"
 
 service:
   pipelines:
@@ -31,8 +33,9 @@ service:
       exporters: [elasticsearch]
     metrics:
       receivers: [otlp]
-      processors: [batch, memory_limiter]
+      processors: [batch, memory_limiter, cumulativetodelta]
       exporters: [elasticsearch]
     logs:
       receivers: [otlp]
+      processors: [batch]
       exporters: [elasticsearch]
