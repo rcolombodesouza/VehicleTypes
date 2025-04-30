@@ -59,7 +59,20 @@ services:
     environment:
       discovery.type: single-node
       xpack.security.enabled: false
+      ES_LOG_LEVEL: debug
+      logger.level: debug
     restart: always
+
+  elasticsearch-init:
+    image: alpine:latest
+    container_name: elasticsearch-init
+    depends_on:
+      - elasticsearch
+    entrypoint: [ "sh", "-c", "apk add --no-cache bash curl && chmod +x /init-elasticsearch.sh && bash /init-elasticsearch.sh" ]
+    volumes:
+      - ./init-elasticsearch.sh:/init-elasticsearch.sh
+    networks:
+      - vehicletype_network
 
   otel-collector:
     image: otel/opentelemetry-collector-contrib:latest
@@ -73,23 +86,8 @@ services:
     restart: always
     networks:
       - vehicletype_network
-
-
-#  # APMSERVER MAKES USE OF OPENTELEMETRY TO EXTRACT METRICS, TRACES AND LOGS FROM THE APPLICATION
-#  apm-server:
-#    image: elastic/apm-server:8.15.3
-#    container_name: apm-server
-#    environment:
-#      ELASTICSEARCH_HOST: elasticsearch:9200
-#      ELASTIC_APM_ACTIVE: true
-#      ELASTIC_APM_SERVER_URL: http://localhost:8200
-#    ports:
-#      - "8200:8200"
-#    depends_on:
-#      - elasticsearch
-#    networks:
-#      - vehicletype_network
-#    restart: always
+    depends_on:
+      - elasticsearch-init
 
   # KIBANA TO SHOW THE COLLECTED DATA FROM ELASTICSEARCH AND APMSERVER
   kibana:

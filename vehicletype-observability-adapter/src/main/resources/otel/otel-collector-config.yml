@@ -21,9 +21,9 @@ processors:
 exporters:
   elasticsearch:
     endpoints: ["http://elasticsearch:9200"]
-    traces_index: "otel-traces"
-    logs_index: "otel-logs"
-    metrics_index: "otel-metrics"
+    traces_index: "vehicletype-traces"
+    logs_index: "vehicletype-logs"
+    metrics_index: "vehicletype-metrics"
 
 service:
   pipelines:
@@ -39,3 +39,6 @@ service:
       receivers: [otlp]
       processors: [batch]
       exporters: [elasticsearch]
+  telemetry:
+    logs:
+      level: debug
