@@ -40,5 +40,5 @@ public interface IServicePort<T, I> {
      *
      * @return a collection of entities, ordered by name in ascending order.
      */
-    Collection<T> findAllByOrderByMakeAsc();
+    Collection<T> findAllByOrderByMakeAsc(int page, int size);
 }

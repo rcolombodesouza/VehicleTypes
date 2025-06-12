@@ -1,7 +1,9 @@
 package com.register.vehicletype.adapter.db.outbound;
 
+import com.register.vehicletype.adapter.db.entity.MotorcycleEntity;
 import com.register.vehicletype.adapter.db.entity.TruckEntity;
 import com.register.vehicletype.adapter.db.repository.TruckRepository;
+import com.register.vehicletype.domain.dto.MotorcycleDTO;
 import com.register.vehicletype.domain.dto.TruckDTO;
 import com.register.vehicletype.domain.exception.TruckNotFoundException;
 import com.register.vehicletype.domain.port.outbound.IRepositoryPort;
@@ -10,6 +12,9 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.convert.ConversionService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
@@ -56,10 +61,12 @@ public class TruckRepositoryAdapter implements IRepositoryPort<TruckDTO, Long> {
      */
     @Override
     @Transactional(readOnly = true)
-    public List<TruckDTO> findAllByOrderByMakeAsc() {
-        Collection<TruckEntity> allTrucksOrderedByMakeAsc = truckRepository.findAllByOrderByMakeAsc();
-        return allTrucksOrderedByMakeAsc.stream()
-                .map(truckEntity -> conversionService.convert(truckEntity, TruckDTO.class)).toList();
+    public List<TruckDTO> findAllByOrderByMakeAsc(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<TruckEntity> truckRepositories = truckRepository.findAll(pageable);
+        return truckRepositories.stream()
+                .map(truckRepository -> conversionService.convert(truckRepository, TruckDTO.class))
+                .toList();
     }
 
     /**

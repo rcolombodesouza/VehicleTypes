@@ -75,7 +75,7 @@ public class TruckServiceAdapter implements IServicePort<TruckDTO, Long> {
      * @return a collection of TruckDTO objects, ordered by make in ascending order
      */
     @Override
-    public Collection<TruckDTO> findAllByOrderByMakeAsc() {
-        return truckRepositoryPort.findAllByOrderByMakeAsc();
+    public Collection<TruckDTO> findAllByOrderByMakeAsc(int page, int size) {
+        return truckRepositoryPort.findAllByOrderByMakeAsc(page, size);
     }
 }

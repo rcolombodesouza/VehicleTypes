@@ -53,5 +53,5 @@ public interface IRestController<D, I> {
      * @return a ResponseEntity containing the collection of entities
      */
     @GetMapping(value = "/all", produces = APPLICATION_JSON_VALUE)
-    ResponseEntity<Collection<D>> findAllByOrderByMakeAsc();
+    ResponseEntity<Collection<D>> findAllByOrderByMakeAsc(@Numeric int page, @Numeric int size);
 }

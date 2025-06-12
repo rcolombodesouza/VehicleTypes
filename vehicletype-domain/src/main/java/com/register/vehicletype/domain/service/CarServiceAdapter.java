@@ -74,7 +74,7 @@ public class CarServiceAdapter implements IServicePort<CarDTO, Long> {
      * @return a collection of CarDTO objects, ordered by make in ascending order
      */
     @Override
-    public Collection<CarDTO> findAllByOrderByMakeAsc() {
-        return carRepositoryPort.findAllByOrderByMakeAsc();
+    public Collection<CarDTO> findAllByOrderByMakeAsc(int page, int size) {
+        return carRepositoryPort.findAllByOrderByMakeAsc(page, size);
     }
 }

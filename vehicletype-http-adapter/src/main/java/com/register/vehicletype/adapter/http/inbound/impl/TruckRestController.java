@@ -71,7 +71,7 @@ public class TruckRestController implements IRestController<TruckDTO, Long> {
      * @return a ResponseEntity containing a collection of TruckDTO entities
      */
     @Override
-    public ResponseEntity<Collection<TruckDTO>> findAllByOrderByMakeAsc() {
-        return ResponseEntity.ok(truckServicePort.findAllByOrderByMakeAsc());
+    public ResponseEntity<Collection<TruckDTO>> findAllByOrderByMakeAsc(int page, int size) {
+        return ResponseEntity.ok(truckServicePort.findAllByOrderByMakeAsc(page, size));
     }
 }

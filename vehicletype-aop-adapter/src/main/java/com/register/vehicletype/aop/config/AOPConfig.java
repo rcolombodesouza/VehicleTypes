@@ -3,6 +3,8 @@ package com.register.vehicletype.aop.config;
 import com.register.vehicletype.aop.aspect.CarServiceAdapterAspect;
 import com.register.vehicletype.aop.aspect.MotorcycleServiceAdapterAspect;
 import com.register.vehicletype.aop.aspect.TruckServiceAdapterAspect;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -15,6 +17,19 @@ public class AOPConfig {
     private static final String CAR_SERVICE_ASPECT_BEAN_NAME = "carServiceAspect";
     private static final String TRUCK_SERVICE_ASPECT_BEAN_NAME = "truckServiceAspect";
     private static final String MOTORCYCLE_SERVICE_ASPECT_BEAN_NAME = "motorcycleServiceAspect";
+    private static final String LOGGER_BEAN_NAME = "logger";
+
+    /**
+     * The logger() method is a factory method that creates and returns an instance of the Logger class.
+     * It is annotated with the @Bean annotation and has the name attribute set to "logger".
+     * The Logger class is used for logging messages in the application, and it is configured to log messages for the CarServiceAdapterAspect class.
+     *
+     * @return A new instance of the Logger class.
+     */
+    @Bean(name = LOGGER_BEAN_NAME)
+    public Logger logger() {
+        return LoggerFactory.getLogger(CarServiceAdapterAspect.class);
+    }
 
     /**
      * The carServiceAdapterAspect() method is a factory method that creates and returns an instance of the CarServiceAdapterAspect class.
@@ -25,8 +40,8 @@ public class AOPConfig {
      * @return A new instance of the CarServiceAdapterAspect class.
      */
     @Bean(name = CAR_SERVICE_ASPECT_BEAN_NAME)
-    public CarServiceAdapterAspect carServiceAdapterAspect() {
-        return new CarServiceAdapterAspect();
+    public CarServiceAdapterAspect carServiceAdapterAspect(Logger logger) {
+        return new CarServiceAdapterAspect(logger);
     }
 
     /**

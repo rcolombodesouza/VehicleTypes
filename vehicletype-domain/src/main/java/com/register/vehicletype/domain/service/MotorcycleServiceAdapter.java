@@ -71,7 +71,7 @@ public class MotorcycleServiceAdapter implements IServicePort<MotorcycleDTO, Lon
      * @return a collection of MotorcycleDTO objects ordered by make in ascending order.
      */
     @Override
-    public Collection<MotorcycleDTO> findAllByOrderByMakeAsc() {
-        return motorcycleRepositoryPort.findAllByOrderByMakeAsc();
+    public Collection<MotorcycleDTO> findAllByOrderByMakeAsc(int page, int size) {
+        return motorcycleRepositoryPort.findAllByOrderByMakeAsc(page, size);
     }
 }

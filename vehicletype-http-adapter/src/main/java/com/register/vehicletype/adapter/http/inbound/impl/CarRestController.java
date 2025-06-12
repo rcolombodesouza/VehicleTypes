@@ -1,7 +1,6 @@
 package com.register.vehicletype.adapter.http.inbound.impl;
 
 import com.register.vehicletype.adapter.http.inbound.IRestController;
-import com.register.vehicletype.adapter.http.validator.Numeric;
 import com.register.vehicletype.domain.dto.CarDTO;
 import com.register.vehicletype.domain.port.inbound.IServicePort;
 import org.springframework.http.HttpStatus;
@@ -76,7 +75,7 @@ public class CarRestController implements IRestController<CarDTO, Long> {
      * @return a ResponseEntity containing a collection of CarDTO objects, ordered by make in ascending order.
      */
     @Override
-    public ResponseEntity<Collection<CarDTO>> findAllByOrderByMakeAsc() {
-        return ResponseEntity.ok(carServicePort.findAllByOrderByMakeAsc());
+    public ResponseEntity<Collection<CarDTO>> findAllByOrderByMakeAsc(int page, int size) {
+        return ResponseEntity.ok(carServicePort.findAllByOrderByMakeAsc(page, size));
     }
 }

@@ -75,7 +75,7 @@ public class MotorcycleRestController implements IRestController<MotorcycleDTO, 
      *         ordered by make in ascending order.
      */
     @Override
-    public ResponseEntity<Collection<MotorcycleDTO>> findAllByOrderByMakeAsc() {
-        return ResponseEntity.ok(motorcycleServicePort.findAllByOrderByMakeAsc());
+    public ResponseEntity<Collection<MotorcycleDTO>> findAllByOrderByMakeAsc(int page, int size) {
+        return ResponseEntity.ok(motorcycleServicePort.findAllByOrderByMakeAsc(page, size));
     }
 }

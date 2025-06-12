@@ -14,6 +14,10 @@
             </column>
             <column name="number_of_doors" type="INT"/>
         </createTable>
+        <rollback>
+            <dropPrimaryKey tableName="car"/>
+            <dropTable tableName="car"/>
+        </rollback>
     </changeSet>
 
     <changeSet id="1717866868955-2" author="vehicle_types">
@@ -24,6 +28,10 @@
             </column>
             <column name="has_sidecar" type="BOOLEAN"/>
         </createTable>
+        <rollback>
+            <dropPrimaryKey tableName="motorcycle"/>
+            <dropTable tableName="motorcycle"/>
+        </rollback>
     </changeSet>
 
     <changeSet id="1717866868955-3" author="vehicle_types">
@@ -34,6 +42,10 @@
             </column>
             <column name="payload_capacity" type="DOUBLE"/>
         </createTable>
+        <rollback>
+            <dropPrimaryKey tableName="truck"/>
+            <dropTable tableName="truck"/>
+        </rollback>
     </changeSet>
 
     <changeSet id="1717866868955-4" author="vehicle_types">
@@ -52,24 +64,37 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
+        <rollback>
+            <dropPrimaryKey tableName="vehicle"/>
+            <dropTable tableName="vehicle"/>
+        </rollback>
     </changeSet>
 
     <changeSet id="1717866868955-5" author="vehicle_types">
         <comment>Create Foreign key constraint for CAR table</comment>
         <addForeignKeyConstraint baseColumnNames="id" baseTableName="car" constraintName="FK_CAR_ON_ID"
                                  referencedColumnNames="id" referencedTableName="vehicle"/>
+        <rollback>
+            <dropForeignKeyConstraint baseTableName="car" constraintName="FK_CAR_ON_ID"/>
+        </rollback>
     </changeSet>
 
     <changeSet id="1717866868955-6" author="vehicle_types">
         <comment>Create Foreign key constraint for MOTORCYCLE table</comment>
         <addForeignKeyConstraint baseColumnNames="id" baseTableName="motorcycle" constraintName="FK_MOTORCYCLE_ON_ID"
                                  referencedColumnNames="id" referencedTableName="vehicle"/>
+        <rollback>
+            <dropForeignKeyConstraint baseTableName="motorcycle" constraintName="FK_MOTORCYCLE_ON_ID"/>
+        </rollback>
     </changeSet>
 
     <changeSet id="1717866868955-7" author="vehicle_types">
         <comment>Create Foreign key constraint for TRUCK table</comment>
         <addForeignKeyConstraint baseColumnNames="id" baseTableName="truck" constraintName="FK_TRUCK_ON_ID"
                                  referencedColumnNames="id" referencedTableName="vehicle"/>
+        <rollback>
+            <dropForeignKeyConstraint baseTableName="truck" constraintName="FK_TRUCK_ON_ID"/>
+        </rollback>
     </changeSet>
 
 </databaseChangeLog>

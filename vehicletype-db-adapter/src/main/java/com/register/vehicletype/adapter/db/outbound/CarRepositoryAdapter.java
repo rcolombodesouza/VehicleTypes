@@ -11,6 +11,9 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.convert.ConversionService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
@@ -60,10 +63,12 @@ public class CarRepositoryAdapter implements IRepositoryPort<CarDTO, Long> {
      */
     @Override
     @Transactional(readOnly = true)
-    public List<CarDTO> findAllByOrderByMakeAsc() {
-        Collection<CarEntity> allCarsOrderedByMakeAsc = carRepository.findAllByOrderByMakeAsc();
-        return allCarsOrderedByMakeAsc.stream()
-                .map(carEntity -> conversionService.convert(carEntity, CarDTO.class)).toList();
+    public List<CarDTO> findAllByOrderByMakeAsc(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<CarEntity> carEntities = carRepository.findAll(pageable);
+        return carEntities.stream()
+                .map(carEntity -> conversionService.convert(carEntity, CarDTO.class))
+                .toList();
     }
 
     /**
@@ -92,10 +97,10 @@ public class CarRepositoryAdapter implements IRepositoryPort<CarDTO, Long> {
     @CacheEvict(key = "#id")
     @Transactional
     public boolean delete(Long id) {
-        if(carRepository.existsById(id)) {
-            carRepository.deleteById(id);
-            return !carRepository.existsById(id);
+        if(!carRepository.existsById(id)) {
+            throw new CarNotFoundException(id);
         }
-        throw new CarNotFoundException(id);
+        carRepository.deleteById(id);
+        return true;
     }
 }

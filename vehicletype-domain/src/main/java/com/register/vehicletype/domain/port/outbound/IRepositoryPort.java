@@ -25,7 +25,7 @@ public interface IRepositoryPort<T, I> {
      *
      * @return the list of objects ordered by name
      */
-    List<T> findAllByOrderByMakeAsc();
+    List<T> findAllByOrderByMakeAsc(int page, int size);
 
     /**
      * Saves the given object.
