@@ -2,7 +2,6 @@ package com.register.vehicletype.adapter.db.repository;
 
 import com.register.vehicletype.adapter.db.entity.TruckEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
 
@@ -11,7 +10,6 @@ import java.util.Collection;
  *
  * <p>It extends the JpaRepository interface, providing CRUD operations for the TruckEntity type.
  */
-@Repository
 public interface TruckRepository extends JpaRepository<TruckEntity, Long> {
 
     /**
